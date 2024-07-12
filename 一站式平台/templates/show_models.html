@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模型训练过程可视化界面</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url('../static/images/bcg.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .show-models-box {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .show-models-box h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .show-models-box form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .show-models-box label {
+        margin-bottom: 5px;
+        color: #666;
+    }
+
+    .show-models-box input[type="file"] {
+        margin-bottom: 15px;
+    }
+
+    .show-models-box button[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .show-models-box button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+<div id="app" class="show-models-box">
+    <h2>训练过程</h2>
+    <!-- 输入参数 -->
+    <form method="POST">
+        {% csrf_token %}
+          {% load tags %}
+            <label for="selected_net">选择模型：</label>
+        <select name="selected_model" id="selected_model" class="form-control">
+            {% if models %}
+                {% for i in models %}
+                    <option value="{{ i.Key|extract_filename }}">{{ i.Key|extract_filename }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+        {% if figureAcc %}
+            <img src="../static/images/figure/train_acc.png" width="480" height="320">
+        {% endif %}
+        {% if figureloss %}
+            <img src="../static/images/figure/train_loss.png" width="480" height="320">
+        {% endif %}
+        {% if data %}
+            {% for d in data %}
+                
+            {% endfor %}
+    {% endif %}
+        <button type="submit" class="btn btn-primary">确定</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预测界面</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url('../static/images/bcg.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .predict-box {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .predict-box h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .predict-box form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .predict-box label {
+        margin-bottom: 5px;
+        color: #666;
+    }
+
+    .predict-box input[type="file"] {
+        margin-bottom: 15px;
+    }
+
+    .predict-box button[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .predict-box button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+<body>
+<div class="predict-box">
+    <form method="POST" enctype="multipart/form-data">
+    <h2>模型预测</h2>
+        {% csrf_token %}
+        {% load tags %}
+        模型<select name="selected_model" id="selected_model" class="form-control">
+            {% if models %}
+                {% for i in models %}
+                    <option value="{{ i.Key|extract_filename }}">{{ i.Key|extract_filename }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+
+        神经网络<select name="selected_net" id="selected_net" class="form-control">
+            {% if nets %}
+                {% for i in nets %}
+                    <option value="{{ i.Key|extract_filename }}">{{ i.Key|extract_filename }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+
+        <div class="form-group">
+            <label for="file">文件：</label>
+            <input type="file" id="file" name="file" class="form-control">
+        </div>
+        {% if img %}
+            <img src="../static/images/uploadfiles/{{ img }}" width="330" height="350"> <br/>
+        {% endif %}
+        {% if tag %}
+            标签:{{ tag }}
+        {% endif %}
+        {% if prob %}
+            概率:{{ prob }}
+        {% endif %}
+        <button type="submit" class="btn btn-primary">开始预测</button>
+    </form>
+</div>
+</body>
+</html>
+
